@@ -26,6 +26,8 @@ public class SecurityConfig {
 
   @Bean
   public SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+    log.debug("디버그: filterChain 빈 등록됨");
+
     http.headers().frameOptions().disable(); // iframe 허용 안함
     http.csrf().disable(); // enable이면 포스트맨 작동 안함
     http.cors().configurationSource(configurationSource());
@@ -48,6 +50,8 @@ public class SecurityConfig {
   }
 
   public CorsConfigurationSource configurationSource() {
+    log.debug("디버그: configurationSource cors 설정이 SecurityFilterChain에 등록됨");
+
     CorsConfiguration configuration = new CorsConfiguration();
     configuration.addAllowedHeader("*");
     configuration.addAllowedMethod("*"); // GET, POST, PUT, DELETE (자바스크립트 요청 허용)
