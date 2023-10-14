@@ -1,6 +1,7 @@
 package com.example.bank.config;
 
 import com.example.bank.domain.user.UserEnum;
+import com.example.bank.util.CustomResponseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
@@ -43,11 +44,9 @@ public class SecurityConfig {
 
     // Exception 가로채기
     http.exceptionHandling()
-        .authenticationEntryPoint((request, response, authenticationException) -> {
-//      response.setContentType("application/json; charset=utf-8");
-          response.setStatus(403);
-          response.getWriter().println("error");
-        });
+        .authenticationEntryPoint(
+            (request, response, authenticationException) ->
+                CustomResponseUtil.unAuthentication(response, "로그인을 진행해 주세요"));
 
     http.authorizeHttpRequests()
         .antMatchers("/api/s/**").authenticated()
