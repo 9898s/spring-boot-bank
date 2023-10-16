@@ -12,12 +12,14 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 import lombok.Builder;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @NoArgsConstructor
+@Getter
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "account_tb")
 @Entity
@@ -27,7 +29,7 @@ public class Account {
   @GeneratedValue(strategy = GenerationType.IDENTITY)
   private Long id;
 
-  @Column(unique = true, nullable = false, length = 20)
+  @Column(unique = true, nullable = false, length = 4)
   private Long number;
 
   @Column(nullable = false, length = 4)
