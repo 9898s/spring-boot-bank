@@ -71,9 +71,25 @@ class JwtAuthenticationFilterTest extends DummyObject {
   @Test
   void unsuccessfulAuthentication_test() throws Exception {
     // given
+    LoginReqDto loginReqDto = new LoginReqDto();
+    loginReqDto.setUsername("ssar");
+    loginReqDto.setPassword("12345");
+
+    String requestBody = om.writeValueAsString(loginReqDto);
+    System.out.println("테스트: " + requestBody);
 
     // when
+    ResultActions resultActions = mvc.perform(post("/api/login")
+        .content(requestBody)
+        .contentType(MediaType.APPLICATION_JSON)
+    );
+
+    String responseBody = resultActions.andReturn().getResponse().getContentAsString();
+    String jwtToken = resultActions.andReturn().getResponse().getHeader(JwtVO.HEADER);
+    System.out.println("테스트: " + responseBody);
+    System.out.println("테스트:" + jwtToken);
 
     // then
+    resultActions.andExpect(status().isUnauthorized());
   }
 }
