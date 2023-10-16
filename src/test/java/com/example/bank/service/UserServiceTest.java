@@ -1,15 +1,14 @@
 package com.example.bank.service;
 
-import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import com.example.bank.config.dummy.DummyObject;
 import com.example.bank.domain.user.User;
-import com.example.bank.domain.user.UserEnum;
 import com.example.bank.domain.user.UserRepository;
-import com.example.bank.service.UserService.JoinReqDto;
-import com.example.bank.service.UserService.JoinResDto;
-import java.time.LocalDateTime;
+import com.example.bank.dto.user.UserReqDto.JoinReqDto;
+import com.example.bank.dto.user.UserResDto.JoinResDto;
 import java.util.Optional;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -20,7 +19,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
 @ExtendWith(MockitoExtension.class)
-class UserServiceTest {
+class UserServiceTest extends DummyObject {
 
   @InjectMocks
   private UserService userService;
@@ -45,16 +44,7 @@ class UserServiceTest {
 //    when(userRepository.findByUsername(any())).thenReturn(Optional.of(new User()));
 
     // stub 2
-    User ssar = User.builder()
-        .id(1L)
-        .username("ssar")
-        .password("2345")
-        .email("ssar@nate.com")
-        .fullname("쌀")
-        .role(UserEnum.CUSTOMER)
-        .createAt(LocalDateTime.now())
-        .updateAt(LocalDateTime.now())
-        .build();
+    User ssar = newMockUser(1L, "ssar", "쌀");
     when(userRepository.save(any())).thenReturn(ssar);
 
     // when

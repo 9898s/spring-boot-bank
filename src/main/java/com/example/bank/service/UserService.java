@@ -1,13 +1,12 @@
 package com.example.bank.service;
 
 import com.example.bank.domain.user.User;
-import com.example.bank.domain.user.UserEnum;
 import com.example.bank.domain.user.UserRepository;
+import com.example.bank.dto.user.UserReqDto.JoinReqDto;
+import com.example.bank.dto.user.UserResDto.JoinResDto;
 import com.example.bank.handler.ex.CustomApiException;
 import java.util.Optional;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -36,40 +35,5 @@ public class UserService {
 
     // 3. dto 응답
     return new JoinResDto(userPS);
-  }
-
-  @Setter
-  @Getter
-  public static class JoinResDto {
-
-    private Long id;
-    private String username;
-    private String fullname;
-
-    public JoinResDto(User user) {
-      this.id = user.getId();
-      this.username = user.getUsername();
-      this.fullname = user.getFullname();
-    }
-  }
-
-  @Setter
-  @Getter
-  public static class JoinReqDto {
-
-    // 유효성 검사
-    private String username;
-    private String password;
-    private String email;
-    private String fullname;
-
-    public User toEntity(BCryptPasswordEncoder passwordEncoder) {
-      return User.builder()
-          .username(username)
-          .password(passwordEncoder.encode(password))
-          .email(email)
-          .role(UserEnum.CUSTOMER)
-          .build();
-    }
   }
 }
