@@ -1,10 +1,9 @@
 package com.example.bank.service;
 
-import static com.example.bank.config.dummy.DummyObject.newMockAccount;
-import static com.example.bank.config.dummy.DummyObject.newMockUser;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
+import com.example.bank.config.dummy.DummyObject;
 import com.example.bank.domain.account.Account;
 import com.example.bank.domain.account.AccountRepository;
 import com.example.bank.domain.user.User;
@@ -22,7 +21,7 @@ import org.mockito.Spy;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 @ExtendWith(MockitoExtension.class)
-class AccountServiceTest {
+class AccountServiceTest extends DummyObject {
 
   @InjectMocks // 모든 Mock들이 InjectMocks로 주입됨
   private AccountService accountService;

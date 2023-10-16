@@ -21,7 +21,7 @@ public class DummyObject {
         .build();
   }
 
-  public static User newMockUser(Long id, String username, String fullname) {
+  protected static User newMockUser(Long id, String username, String fullname) {
     BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     String encPassword = passwordEncoder.encode("1234");
 
@@ -46,7 +46,7 @@ public class DummyObject {
         .build();
   }
 
-  public static Account newMockAccount(Long id, Long number, Long balance, User user) {
+  protected static Account newMockAccount(Long id, Long number, Long balance, User user) {
     return Account.builder()
         .id(id)
         .number(number)
