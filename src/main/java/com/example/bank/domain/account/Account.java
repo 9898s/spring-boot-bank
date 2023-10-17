@@ -1,7 +1,9 @@
 package com.example.bank.domain.account;
 
 import com.example.bank.domain.user.User;
+import com.example.bank.handler.ex.CustomApiException;
 import java.time.LocalDateTime;
+import java.util.Objects;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityListeners;
@@ -60,5 +62,11 @@ public class Account {
     this.user = user;
     this.createAt = createAt;
     this.updateAt = updateAt;
+  }
+
+  public void checkOwner(Long userId) {
+    if (!Objects.equals(user.getId(), userId)) {
+      throw new CustomApiException("계좌 소유자가 아닙니다.");
+    }
   }
 }

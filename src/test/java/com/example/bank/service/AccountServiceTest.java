@@ -1,5 +1,6 @@
 package com.example.bank.service;
 
+import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 
@@ -10,6 +11,7 @@ import com.example.bank.domain.user.User;
 import com.example.bank.domain.user.UserRepository;
 import com.example.bank.dto.account.AccountReqDto.AccountSaveReqDto;
 import com.example.bank.dto.account.AccountResDto.AccountSaveResDto;
+import com.example.bank.handler.ex.CustomApiException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.Optional;
 import org.assertj.core.api.Assertions;
@@ -62,5 +64,20 @@ class AccountServiceTest extends DummyObject {
 
     // then
     Assertions.assertThat(accountSaveResDto.getNumber()).isEqualTo(1111L);
+  }
+
+  @Test
+  void 계좌삭제_test() throws Exception {
+    // given
+    Long number = 1111L;
+    Long userId = 2L;
+
+    // stub
+    User ssar = newMockUser(1L, "ssar", "쌀");
+    Account ssarAccount = newMockAccount(1L, 1111L, 1000L, ssar);
+    when(accountRepository.findByNumber(any())).thenReturn(Optional.of(ssarAccount));
+
+    // when
+    assertThrows(CustomApiException.class, () -> accountService.계좌삭제(number, userId));
   }
 }

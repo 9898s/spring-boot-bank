@@ -5,15 +5,12 @@ import com.example.bank.domain.account.AccountRepository;
 import com.example.bank.domain.user.User;
 import com.example.bank.domain.user.UserRepository;
 import com.example.bank.dto.account.AccountReqDto.AccountSaveReqDto;
+import com.example.bank.dto.account.AccountResDto.AccountListResDto;
 import com.example.bank.dto.account.AccountResDto.AccountSaveResDto;
 import com.example.bank.handler.ex.CustomApiException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
-import lombok.Getter;
 import lombok.RequiredArgsConstructor;
-import lombok.Setter;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,36 +31,6 @@ public class AccountService {
     return new AccountListResDto(userPS, accountListPS);
   }
 
-  @Setter
-  @Getter
-  public static class AccountListResDto {
-
-    private final String fullname;
-    private List<AccountDto> accounts = new ArrayList<>();
-
-    public AccountListResDto(User user, List<Account> accounts) {
-      this.fullname = user.getFullname();
-      this.accounts = accounts.stream()
-          .map(AccountDto::new)
-          .collect(Collectors.toList());
-    }
-
-    @Setter
-    @Getter
-    public class AccountDto {
-
-      private final Long id;
-      private final Long number;
-      private final Long balance;
-
-      public AccountDto(Account account) {
-        this.id = account.getId();
-        this.number = account.getNumber();
-        this.balance = account.getBalance();
-      }
-    }
-  }
-
   @Transactional
   public AccountSaveResDto 계좌등록(AccountSaveReqDto accountSaveReqDto, Long userId) {
     User userPS = userRepository.findById(userId)
@@ -76,5 +43,15 @@ public class AccountService {
 
     Account accountPS = accountRepository.save(accountSaveReqDto.toEntity(userPS));
     return new AccountSaveResDto(accountPS);
+  }
+
+  @Transactional
+  public void 계좌삭제(Long number, Long userId) {
+    Account accountPS = accountRepository.findByNumber(number)
+        .orElseThrow(() -> new CustomApiException("계좌를 찾을 수 없습니다."));
+
+    accountPS.checkOwner(userId);
+
+    accountRepository.deleteById(accountPS.getId());
   }
 }
