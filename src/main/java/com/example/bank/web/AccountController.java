@@ -6,6 +6,8 @@ import com.example.bank.dto.account.AccountReqDto;
 import com.example.bank.dto.account.AccountResDto.AccountListResDto;
 import com.example.bank.dto.account.AccountResDto.AccountSaveResDto;
 import com.example.bank.service.AccountService;
+import com.example.bank.service.AccountService.AccountDepositReqDto;
+import com.example.bank.service.AccountService.AccountDepositResDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -52,5 +54,13 @@ public class AccountController {
       @AuthenticationPrincipal LoginUser loginUser) {
     accountService.계좌삭제(number, loginUser.getUser().getId());
     return new ResponseEntity<>(new ResponseDto<>(1, "계좌 삭제 완료", null), HttpStatus.OK);
+  }
+
+  @PostMapping("/account/deposit")
+  public ResponseEntity<?> depositAccount(
+      @RequestBody @Valid AccountDepositReqDto accountDepositReqDto, BindingResult bindingResult) {
+    AccountDepositResDto accountDepositResDto = accountService.계좌입금(accountDepositReqDto);
+    return new ResponseEntity<>(new ResponseDto<>(1, "계좌 입금 완료", accountDepositResDto),
+        HttpStatus.OK);
   }
 }

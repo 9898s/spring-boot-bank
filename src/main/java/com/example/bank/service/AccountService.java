@@ -121,12 +121,11 @@ public class AccountService {
       private String sender;
       private String receiver;
       private Long amount;
+      private String tel;
+      private String createAt;
 
       @JsonIgnore
       private Long depositAccountBalance; // 클라이언트에게 전달 X -> 서비스단에서 테스트 용도
-
-      private String tel;
-      private String createAt;
 
       public TransactionDto(Transaction transaction) {
         this.id = transaction.getId();
