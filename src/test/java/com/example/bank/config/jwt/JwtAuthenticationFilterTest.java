@@ -18,12 +18,12 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.SpringBootTest.WebEnvironment;
 import org.springframework.http.MediaType;
 import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.jdbc.Sql;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.transaction.annotation.Transactional;
 
-@Transactional
 @ActiveProfiles("test")
+@Sql("classpath:db/teardown.sql")
 @AutoConfigureMockMvc
 @SpringBootTest(webEnvironment = WebEnvironment.MOCK)
 class JwtAuthenticationFilterTest extends DummyObject {
@@ -43,7 +43,7 @@ class JwtAuthenticationFilterTest extends DummyObject {
   }
 
   @Test
-  void successfulAuthenticationtest() throws Exception {
+  void successfulAuthentication_test() throws Exception {
     // given
     LoginReqDto loginReqDto = new LoginReqDto();
     loginReqDto.setUsername("ssar");
