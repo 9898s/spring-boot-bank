@@ -5,12 +5,14 @@ import com.example.bank.dto.ResponseDto;
 import com.example.bank.dto.account.AccountReqDto;
 import com.example.bank.dto.account.AccountResDto.AccountSaveResDto;
 import com.example.bank.service.AccountService;
+import com.example.bank.service.AccountService.AccountListResDto;
 import javax.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -31,5 +33,14 @@ public class AccountController {
         loginUser.getUser().getId());
     return new ResponseEntity<>(new ResponseDto<>(1, "계좌등록 성공", accountSaveResDto),
         HttpStatus.CREATED);
+  }
+
+  // 인증이 필요하고, account 테이블에 1번 row를 주세요
+  // 권한 처리 해야함
+  @GetMapping("/s/account/login-user")
+  public ResponseEntity<?> findUserAccount(@AuthenticationPrincipal LoginUser loginUser) {
+    AccountListResDto accountListResDto = accountService.계좌목록보기_유저별(loginUser.getUser().getId());
+    return new ResponseEntity<>(new ResponseDto<>(1, "계좌목록보기_유저별 성공", accountListResDto),
+        HttpStatus.OK);
   }
 }
