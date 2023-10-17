@@ -69,4 +69,36 @@ public class RegexTest {
         Pattern.matches("^[a-zA-Z0-9]{2,6}@[a-zA-Z0-9]{2,6}\\.[a-zA-Z]{2,3}$", username);
     System.out.println("테스트: " + result);
   }
+
+  @Test
+  void account_gubun_test1() throws Exception {
+    String gubun = "DEPOSIT";
+    boolean result =
+        Pattern.matches("^(DEPOSIT)$", gubun);
+    System.out.println("테스트: " + result);
+  }
+
+  @Test
+  void account_gubun_test2() throws Exception {
+    String gubun = "TRANSFER";
+    boolean result =
+        Pattern.matches("^(DEPOSIT|TRANSFER)$", gubun);
+    System.out.println("테스트: " + result);
+  }
+
+  @Test
+  void account_tel_test1() throws Exception {
+    String tel = "010-1111-2222";
+    boolean result =
+        Pattern.matches("^[0-9]{3}-[0-9]{4}-[0-9]{4}", tel);
+    System.out.println("테스트: " + result);
+  }
+
+  @Test
+  void account_tel_test2() throws Exception {
+    String tel = "01011112222";
+    boolean result =
+        Pattern.matches("^[0-9]{11}", tel);
+    System.out.println("테스트: " + result);
+  }
 }
