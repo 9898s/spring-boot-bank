@@ -10,8 +10,7 @@ import org.junit.jupiter.api.Test;
 
 class JwtProcessTest {
 
-  @Test
-  void create_test() throws Exception {
+  private String createToken() {
     // given
     User user = User.builder()
         .id(1L)
@@ -20,7 +19,13 @@ class JwtProcessTest {
     LoginUser loginUser = new LoginUser(user);
 
     // when
-    String jwtToken = JwtProcess.create(loginUser);
+    return JwtProcess.create(loginUser);
+  }
+
+  @Test
+  void create_test() throws Exception {
+    // when
+    String jwtToken = createToken();
     System.out.println("테스트: " + jwtToken);
 
     // then
@@ -30,7 +35,8 @@ class JwtProcessTest {
   @Test
   void verify_test() throws Exception {
     // given
-    String jwtToken = "eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzUxMiJ9.eyJzdWIiOiJiYW5rIiwicm9sZSI6IkNVU1RPTUVSIiwiaWQiOjEsImV4cCI6MTY5ODA1ODk4Mn0.jAQ19Ta8xYZm-4e8qVVFwpPczzV0ohD0OkfeW3iRUZXs4NnbYX8xNoffAqZ8FlZXz9wtZLVum1L9IU8C8-r6JA";
+    String token = createToken(); // Bearer 제거해서 처리하기
+    String jwtToken = token.replace(JwtVO.TOKEN_PREFIX, "");
 
     // when
     LoginUser loginUser = JwtProcess.verify(jwtToken);
